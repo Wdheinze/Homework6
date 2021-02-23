@@ -6,9 +6,10 @@ var picMapping = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];//first number is the index of t
 var firstNumber = -1;
 var secondNumber = -1;
 var clicks = 0;
+var finalCount = 0;
 
 //JSON TIME LETS GOOOO
-var player = { "firstname": "", "lastname": "", "age": "" };
+var player = { "firstname": "", "lastname": "", "age": "", "score": "" };
 
 //end of JSON
 function printBlanks() {
@@ -44,7 +45,6 @@ function flipImage(number) {
     clicks += 1;
     if (clicks == 2) {
         clicks = 0;
-        console.log("you did a good");
         attemptGet();
     }
     //firstNumber = number;
@@ -67,6 +67,10 @@ function flipImage(number) {
     else if (pics[secondNumber] == pics[firstNumber] && firstNumber >= 0 && secondNumber >= 0) {
         firstNumber = -1;
         secondNumber = -1;
+        finalCount += 1;
+    }
+    if (finalCount == 5) {
+        gameEnd();
     }
 
 
@@ -93,14 +97,25 @@ function addToPlayer() {
     window.location = "index.html";
 
 }
+function printFinalInfo() {
+    var playerInformation = localStorage.getItem("playerInfo");
+    player = JSON.parse(playerInformation);
+    document.getElementById("firstNameGet").innerHTML = player.firstName
+    document.getElementById("lastNameGet").innerHTML = player.lastName
+    document.getElementById("ageGet").innerHTML = player.age
+    document.getElementById("score").innerHTML = player.score
+}
+
 //THis is how we keep storage for other pages
 function playerInfo() {
     var playerInformation = localStorage.getItem("playerInfo");
-    var playerInformation = localStorage.getItem("attemptGet");
     player = JSON.parse(playerInformation);
+    player.score = attempts;
+    localStorage.setItem("playerInfo", JSON.stringify(player));
     console.log(player.firstname);
     console.log(player.age);
     console.log(player.lastname);
+
 
 }
 
@@ -113,3 +128,12 @@ function attemptGet() {
     console.log(attempts);
     document.getElementById('score').innerHTML = attempts;
 }
+
+//to get the player info at end of game
+
+function gameEnd() {
+    playerInfo();
+    window.location = "finalpage.html";
+}
+
+
